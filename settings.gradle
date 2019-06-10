@@ -1,1 +1,1 @@
-include ':app', ':pandora-core'
+include ':app', ':pandora-core', ':app2'
