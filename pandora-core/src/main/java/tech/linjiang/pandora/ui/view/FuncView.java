@@ -3,6 +3,7 @@ package tech.linjiang.pandora.ui.view;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.Configuration;
+import android.graphics.Color;
 import android.graphics.PixelFormat;
 import android.os.Build;
 import androidx.annotation.DrawableRes;
@@ -36,12 +37,13 @@ public class FuncView extends LinearLayout {
     private UniversalAdapter adapter;
     private float lastY;
 
-
     @SuppressLint("ClickableViewAccessibility")
     public FuncView(Context context) {
         super(context);
+        setAlpha(0.6f);
         setOrientation(HORIZONTAL);
         setBackgroundResource(R.drawable.pd_shadow_131124);
+        getBackground().setAlpha(170);
         ImageView moveView = new ImageView(context);
         RecyclerView recyclerView = new RecyclerView(context);
         ImageView closeView = new ImageView(context);

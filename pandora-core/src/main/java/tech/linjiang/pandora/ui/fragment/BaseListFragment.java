@@ -4,6 +4,8 @@ import android.graphics.drawable.GradientDrawable;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import android.view.LayoutInflater;
 import android.view.View;
 
 import tech.linjiang.pandora.core.R;
@@ -24,7 +26,7 @@ public class BaseListFragment extends BaseFragment {
     @Override
     protected View getLayoutView() {
         adapter = new UniversalAdapter();
-        recyclerView = new MenuRecyclerView(getContext());
+        recyclerView = (MenuRecyclerView) LayoutInflater.from(getContext()).inflate(R.layout.vertical_recycler_view, null);
         recyclerView.setBackgroundColor(ViewKnife.getColor(R.color.pd_main_bg));
         recyclerView.setLayoutManager(onCreateLayoutManager());
         if (needDefaultDivider()) {
