@@ -1,5 +1,7 @@
 package tech.linjiang.pandora.ui.fragment;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
@@ -22,6 +24,8 @@ import tech.linjiang.pandora.ui.GeneralDialog;
 import tech.linjiang.pandora.ui.item.ViewItem;
 import tech.linjiang.pandora.ui.recyclerview.BaseItem;
 import tech.linjiang.pandora.ui.recyclerview.UniversalAdapter;
+import tech.linjiang.pandora.util.Config;
+import tech.linjiang.pandora.util.ConfigKeys;
 import tech.linjiang.pandora.util.Utils;
 import tech.linjiang.pandora.util.ViewKnife;
 
@@ -130,11 +134,21 @@ public class ViewFragment extends BaseFragment implements View.OnClickListener {
         childRv.setAdapter(childAdapter);
         childAdapter.setListener(clickListener);
 
-        GeneralDialog.build(-1)
-                .title(R.string.pd_help_title)
-                .message(R.string.pd_help_operate)
-                .positiveButton(R.string.pd_ok)
-                .show(this);
+        if (!Config.getBoolean(ConfigKeys.VIEW_INFO_DISABLE, false))
+        {
+            GeneralDialog.build(-1)
+                    .title(R.string.pd_help_title)
+                    .message(R.string.pd_help_operate)
+                    .positiveButton(R.string.pd_ok)
+                    .negativeButton(R.string.pd_never_show)
+                    .show(this);
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == Activity.RESULT_CANCELED)
+            Config.setBoolean(ConfigKeys.VIEW_INFO_DISABLE, true);
     }
 
     private void refreshViewInfo(View target) {

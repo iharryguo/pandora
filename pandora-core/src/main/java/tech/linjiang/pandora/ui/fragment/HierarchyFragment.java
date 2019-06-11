@@ -87,7 +87,7 @@ public class HierarchyFragment extends BaseListFragment
                     @Override
                     protected float calculateSpeedPerPixel(DisplayMetrics displayMetrics) {
                         // let scroll smooth more
-                        return 120f / displayMetrics.densityDpi;
+                        return 200f / (displayMetrics.densityDpi * (float)(Math.pow(position, 1.0/4)));
                     }
 
                     @Override

@@ -85,35 +85,32 @@ public class Config {
     public static boolean getSHAKE_SWITCH() {
         return getSp().getBoolean(KEY_SHAKE_SWITCH, DEF_KEY_SHAKE_SWITCH);
     }
+
     public static void setSHAKE_SWITCH(Boolean value) {
         getSp().edit()
                 .putBoolean(KEY_SHAKE_SWITCH, value)
                 .apply();
     }
 
-    //
-
     public static int getSHAKE_THRESHOLD() {
         return getSp().getInt(KEY_SHAKE_THRESHOLD, DEF_KEY_SHAKE_THRESHOLD);
     }
+
     public static void setSHAKE_THRESHOLD(int value) {
         getSp().edit()
                 .putInt(KEY_SHAKE_THRESHOLD, value)
                 .apply();
     }
 
-    //
-
     public static int getUI_ACTIVITY_GRAVITY() {
         return getSp().getInt(KEY_UI_ACTIVITY_GRAVITY, DEF_UI_ACTIVITY_GRAVITY);
     }
+
     public static void setUI_ACTIVITY_GRAVITY(int value) {
         getSp().edit()
                 .putInt(KEY_UI_ACTIVITY_GRAVITY, value)
                 .apply();
     }
-
-    //
 
     public static int getUI_GRID_INTERVAL() {
         return getSp().getInt(KEY_UI_GRID_INTERVAL, DEF_UI_GRID_INTERVAL);
@@ -123,8 +120,6 @@ public class Config {
                 .putInt(KEY_UI_GRID_INTERVAL, value)
                 .apply();
     }
-
-    //
 
     public static long getNETWORK_DELAY_REQ() {
         return getSp().getLong(KEY_NETWORK_DELAY_REQ, DEF_KEY_NETWORK_DELAY_REQ);
@@ -179,7 +174,13 @@ public class Config {
                 .apply();
     }
 
+    public static void setBoolean(String key, boolean value) {
+        getSp().edit().putBoolean(key, value).apply();
+    }
 
+    public static boolean getBoolean(String key, boolean defValue) {
+        return getSp().getBoolean(key, defValue);
+    }
 
     @IntDef({
             Type.SHAKE_SWITCH,
@@ -213,6 +214,5 @@ public class Config {
         int UI_ACTIVITY_GRAVITY = 0x40;
         int UI_GRID_INTERVAL = 0x41;
         int UI_IGNORE_SYS_LAYER = 0x42;
-
     }
 }

@@ -2,7 +2,8 @@
 <resources>
     <string name="pd_lib_name">pandora</string>
     <string name="pd_error_msg">空</string>
-    <string name="pd_ok">OK</string>
+    <string name="pd_ok">确定</string>
+    <string name="pd_never_show">不再显示</string>
     <string name="pd_cancel">Cancel</string>
     <string name="pd_not_support">不支持的文件类型</string>
     <string name="pd_success">操作成功</string>

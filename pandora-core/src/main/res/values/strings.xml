@@ -2,6 +2,7 @@
     <string name="pd_lib_name">pandora</string>
     <string name="pd_error_msg">EMPTY</string>
     <string name="pd_ok">OK</string>
+    <string name="pd_never_show">Never Show</string>
     <string name="pd_cancel">Cancel</string>
     <string name="pd_not_support">not support file type</string>
     <string name="pd_success">success</string>
