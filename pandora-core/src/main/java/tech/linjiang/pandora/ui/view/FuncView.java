@@ -36,14 +36,15 @@ public class FuncView extends LinearLayout {
 
     private UniversalAdapter adapter;
     private float lastY;
+    private float lastX;
 
     @SuppressLint("ClickableViewAccessibility")
     public FuncView(Context context) {
         super(context);
-        setAlpha(0.6f);
+        setAlpha(0.9f);
         setOrientation(HORIZONTAL);
         setBackgroundResource(R.drawable.pd_shadow_131124);
-        getBackground().setAlpha(170);
+        getBackground().setAlpha(210);
         ImageView moveView = new ImageView(context);
         RecyclerView recyclerView = new RecyclerView(context);
         ImageView closeView = new ImageView(context);
@@ -95,15 +96,18 @@ public class FuncView extends LinearLayout {
             switch (event.getAction()) {
                 case MotionEvent.ACTION_DOWN:
                     lastY = event.getRawY();
+                    lastX = event.getRawX();
                     break;
                 case MotionEvent.ACTION_MOVE:
                     WindowManager.LayoutParams params = (WindowManager.LayoutParams) getLayoutParams();
+                    params.x += event.getRawX() - lastX;
+                    params.x = Math.max(0, params.x); // x太小就再拉不出来了
                     params.y += event.getRawY() - lastY;
-                    params.y = Math.max(0, params.y);
-                    Utils.updateViewLayoutInWindow(FuncView.this, params);
+                    lastX = event.getRawX();
                     lastY = event.getRawY();
+                    Utils.updateViewLayoutInWindow(FuncView.this, params);
                     Utils.cancelTask(task);
-                    Utils.postDelayed(task, 200);
+                    Utils.postDelayed(task, 500);
                     break;
                 default:
                     break;
@@ -146,7 +150,7 @@ public class FuncView extends LinearLayout {
         } else {
             params.type = WindowManager.LayoutParams.TYPE_APPLICATION_OVERLAY;
         }
-        params.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE;
+        params.flags = WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE | WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS;
         params.format = PixelFormat.TRANSLUCENT;
         params.gravity = Gravity.TOP | Gravity.START;
         params.x = 0;

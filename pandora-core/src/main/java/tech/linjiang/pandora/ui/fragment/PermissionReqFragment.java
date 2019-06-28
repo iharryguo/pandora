@@ -2,7 +2,9 @@ package tech.linjiang.pandora.ui.fragment;
 
 
 import android.app.Activity;
+import android.app.AppOpsManager;
 import android.content.ActivityNotFoundException;
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
@@ -13,6 +15,7 @@ import android.support.v4.app.Fragment;
 
 import tech.linjiang.pandora.core.R;
 import tech.linjiang.pandora.ui.GeneralDialog;
+import tech.linjiang.pandora.util.Utils;
 
 /**
  * Created by linjiang on 2019/3/5.
@@ -41,18 +44,14 @@ public class PermissionReqFragment extends Fragment {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (code == requestCode) {
-            if (resultCode == Activity.RESULT_OK) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    if (!Settings.canDrawOverlays(getContext())) {
-                        try {
-                            Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
-                            intent.setData(Uri.parse("package:" + getContext().getPackageName()));
-                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            getActivity().startActivity(intent);
-                        } catch (ActivityNotFoundException e) {
-                            e.printStackTrace();
-                        }
-                    }
+            if (resultCode == Activity.RESULT_OK && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                try {
+                    Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
+                    intent.setData(Uri.parse("package:" + getContext().getPackageName()));
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    getActivity().startActivity(intent);
+                } catch (ActivityNotFoundException e) {
+                    e.printStackTrace();
                 }
             }
             getActivity().finish();

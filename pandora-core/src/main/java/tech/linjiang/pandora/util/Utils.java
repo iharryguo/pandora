@@ -11,6 +11,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Process;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
@@ -160,7 +161,8 @@ public class Utils {
                 return false;
             }
             WindowManager windowManager = (WindowManager) Utils.getContext().getSystemService(Context.WINDOW_SERVICE);
-            windowManager.addView(v, params);
+            if (windowManager != null)
+                windowManager.addView(v, params);
             return true;
         } catch (Throwable t){
             t.printStackTrace();
@@ -177,27 +179,11 @@ public class Utils {
     }
 
     private static boolean isPermissionDenied() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            return !Settings.canDrawOverlays(getContext());
-        } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                AppOpsManager appOpsMgr = (AppOpsManager) CONTEXT.getSystemService(Context.APP_OPS_SERVICE);
-                try {
-                    int mode = appOpsMgr.checkOpNoThrow("android:system_alert_window",
-                            android.os.Process.myUid(), CONTEXT.getPackageName());
-                    if (mode == AppOpsManager.MODE_ERRORED) {
-                        return true;
-                    }
-                } catch (Throwable t) {
-                    // Unknown operation string: android:system_alert_window
-                }
-            }
-            if (!Config.ifPermissionChecked()) {
-                Config.setPermissionChecked();
-                return true;
-            }
-        }
-        return false;
+//        if (!Config.ifPermissionChecked()) {
+//            Config.setPermissionChecked();
+//            return true;
+//        }
+        return !canDrawOverlays(getContext());
     }
 
     public static List<String> getActivities() {
@@ -228,5 +214,22 @@ public class Utils {
         }
         printWriter.close();
         return writer.toString();
+    }
+
+    public static boolean canDrawOverlays(Context context)
+    {
+        boolean canDraw = true;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            AppOpsManager appOpsMgr = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
+            if (appOpsMgr != null)
+            {
+                int mode = appOpsMgr.checkOpNoThrow("android:system_alert_window", Process.myUid(), context.getPackageName());
+                canDraw = (mode == AppOpsManager.MODE_ALLOWED || mode == AppOpsManager.MODE_IGNORED);
+                if (!canDraw && Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                    canDraw = Settings.canDrawOverlays(context);
+                }
+            }
+        }
+        return canDraw;
     }
 }
